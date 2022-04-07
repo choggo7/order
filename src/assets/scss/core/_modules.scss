@@ -1,0 +1,5 @@
+@mixin flex($dir_cnt: center,$dir_algn:center) {
+    display: flex;
+    justify-content: $dir_cnt;
+    align-items: $dir_algn;
+  }

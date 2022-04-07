@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "Apoka";
+    src: url("../font/Apoka_Regular/Apoka_Regular.eot");
+    src: url("../font/Apoka_Regular/Apoka_Regular.eot?#iefix") format("embedded-opentype"), 
+    url("../font/Apoka_Regular/Apoka_Regular.woff2") format("woff2"), 
+    url("../font/Apoka_Regular/Apoka_Regular.woff") format("woff"), 
+    url("../font/Apoka_Regular/Apoka_Regular.ttf") format("truetype"),
+    url("../font/Apoka_Regular/Apoka_Regular.svg#Apoka") format("svg");
+}

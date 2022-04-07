@@ -1,8 +1,11 @@
+<script>
+import NavbarVue from "./views/navbar/Nav-bar.vue";
+export default {
+  components: { NavbarVue },
+};
+</script>
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
+  <NavbarVue />
   <router-view />
 </template>
 
