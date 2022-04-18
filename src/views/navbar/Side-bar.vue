@@ -1,10 +1,26 @@
 <script>
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
+import ordersData from "../../assets/data/orders.json";
 export default {
+  data() {
+    return { orders: ordersData, total: 0 };
+  },
   props: {},
   components: {},
   setup() {
     return { collapsed, toggleSidebar, sidebarWidth };
+  },
+  methods: {
+    mealIcon: function (path) {
+      return require(`../../assets/img/${path}`);
+    },
+  },
+  computed: {
+    total_amount() {
+      console.log(this.total);
+      this.orders.map((order) => (this.total += order.price));
+      return this.total;
+    },
   },
 };
 </script>
@@ -15,6 +31,7 @@ export default {
       <ul>
         <li class="basket" @click="toggleSidebar">
           <i class="fas fa-box"></i>
+          <span class="notification"> {{ orders.length }} </span>
         </li>
         <li class="avatar"><i class="fas fa-user-astronaut"></i></li>
         <li>sarah james</li>
@@ -26,26 +43,19 @@ export default {
         <div class="modify"><i class="fas fa-pen"></i></div>
       </div>
       <ul class="list">
-        <li class="order">
-          <div class="img">img</div>
-          <div class="content">1 x greek salad</div>
-          <div class="price">$34</div>
+        <li class="order" v-for="order in orders" :key="order.id">
+          <div
+            class="img"
+            :style="{ 'background-image': `url( ${mealIcon(order.img)} )` }"
+          ></div>
+          <div class="content">
+            {{ order.quantity }} <span class="x">x</span> {{ order.name }}
+          </div>
+          <div class="price">
+            <span class="currency">DH</span> {{ order.price }}
+          </div>
         </li>
-        <li class="order">
-          <div class="img">img</div>
-          <div class="content">1 x greek salad</div>
-          <div class="price">$34</div>
-        </li>
-        <li class="order">
-          <div class="img">img</div>
-          <div class="content">1 x greek salad</div>
-          <div class="price">$34</div>
-        </li>
-        <li class="order">
-          <div class="img">img</div>
-          <div class="content">1 x greek salad</div>
-          <div class="price">$34</div>
-        </li>
+
         <li class="order deliver">
           <div class="img"><i class="fas fa-location-dot"></i></div>
           <div class="content">
@@ -57,7 +67,9 @@ export default {
 
       <div class="total">
         <div class="title">total amount</div>
-        <div class="total-price">168$</div>
+        <div class="total-price">
+          <span class="currency">DH</span> {{ total_amount }}
+        </div>
       </div>
     </div>
     <div class="checkout"><button>checkout</button></div>
@@ -83,31 +95,34 @@ export default {
   top: 0;
   right: -200px;
   bottom: 0;
-  padding: 2.5em 2em 2.5em 5em;
+  padding: 1.5em 2em 0em 5em;
   transition: 0.3s ease;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   max-width: 600px;
   min-width: 400px;
   max-height: 100%;
   height: 100%;
   -webkit-clip-path: ellipse(100% 110% at 100% 50%);
   clip-path: ellipse(100% 110% at 100% 50%);
-  -webkit-box-shadow:  5px 10px #000;
+  -webkit-box-shadow: 5px 10px #000;
   -moz-box-shadow: 5px 10px #000;
   -ms-box-shadow: 5px 10px #000;
   -o-box-shadow: 5px 10px #000;
   box-shadow: 5px 10px #000;
-  
+
   header {
+    margin-bottom: 3em;
     ul {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      @include flex(flex-start,center);
       padding: 0px;
       margin: 0px;
       gap: 20px;
+      li{
+        text-transform: capitalize;
+      }
     }
   }
   .orders {
@@ -115,14 +130,15 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 1em;
       h3 {
         font-size: 30px;
-        color: var(--sidebar-color);
+        color: $color_font_1;
         margin: 0px;
         text-transform: capitalize;
       }
       .modify {
-        color: var(--sidebar-color-1);
+        color: $color_font_2;
       }
     }
     ul.list {
@@ -135,40 +151,50 @@ export default {
           align-items: center;
           padding: 15px 0px;
           .img {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
             height: 75px;
             width: 120px;
-            background-color: var(--sidebar-bg-color-1);
+            background-color: $bg_color_box;
             border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
           }
           .content {
-            color: var(--sidebar-color);
+            color: $color_font_1;
             text-align: left;
             flex-grow: 1;
             padding: 10px 25px;
+            .x {
+              color: $color_font_2;
+            }
             .time {
-              color: var(--sidebar-color-1);
+              color: $icon_color;
             }
           }
           .price {
-            color: var(--sidebar-color-2);
+            color: $color_font_2;
             flex-grow: 1;
             text-align: right;
           }
         }
         &.deliver {
-          border-top: 3px dashed var(--sidebar-color-2);
-          padding-top: 35px;
+          border-top: 3px dashed $color_font_2;
+          padding-top: 1.5em;
+          margin-top: 1em;
           .img {
-            color: var(--sidebar-color-1);
+            color: $color_font_2;
+            svg{
+              height: 1.4em;
+            }
           }
           .content {
             display: flex;
             flex-direction: column;
             .time {
-              color: var(--sidebar-color-1);
+              color: $icon_color;
             }
           }
         }
@@ -178,7 +204,8 @@ export default {
   .total {
     display: flex;
     justify-content: space-between;
-    margin-top: 25px;
+    margin-top: 1.5em;
+    text-transform: capitalize;
     .title {
       font-size: 25px;
     }
@@ -188,9 +215,11 @@ export default {
   }
   .checkout {
     width: 100%;
+    margin-top: auto;
+    margin-bottom: 3em;
   }
   i.fas {
-    color: var(--sidebar-color-1);
+    color: $color_font_2;
   }
   ul {
     list-style: none;
@@ -203,7 +232,7 @@ export default {
   padding: 0.75em;
   color: rgba(255, 255, 255, 0.7);
   transition: 0.2s linear;
-  color: var(--sidebar-color-1);
+  color: $color_font_2;
   z-index: 2;
   position: fixed;
   .rotate-180 {

@@ -1,0 +1,16 @@
+[
+    {
+        "id":"1",
+        "name": "skewer",
+        "quantity": 2,
+        "price": 150,
+        "img": "skewer.jpg"
+    },
+    {
+        "id":"2",
+        "name": "greek salad",
+        "quantity": 3,
+        "price": 210,
+        "img": "salade-nicoise.jpeg"
+    }
+]

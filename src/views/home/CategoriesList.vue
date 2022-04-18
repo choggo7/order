@@ -41,7 +41,7 @@ export default {
 <template>
   <section class="categories">
     <ul class="list">
-      <li class="item" @click="getCategory()" id="all" >
+      <li class="item" @click="getCategory()" id="all">
         <img :src="require(`@/assets/img/svg/dish.png`)" alt="all" />
         <span class="name">all</span>
       </li>
@@ -68,7 +68,9 @@ export default {
     <h2 class="title">Popular dishes</h2>
     <ul class="list">
       <li v-for="meal in CategoryFilter" :key="meal.id">
-        <DishesList :dishe="meal" />
+        <router-link :to="'/meal/'+meal.id">
+          <DishesList :dishe="meal" />
+        </router-link>
       </li>
     </ul>
   </section>
@@ -92,6 +94,7 @@ export default {
       height: auto;
       width: 7.4em;
       text-transform: capitalize;
+      cursor: pointer;
       img {
         width: 2em;
       }

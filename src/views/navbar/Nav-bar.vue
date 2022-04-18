@@ -1,12 +1,13 @@
 <script>
 import { collapsed, toggleSidebar, sidebarWidth } from "./state";
 import mealsData from "../../assets/data/meals.json";
+import ordersData from "../../assets/data/orders.json";
 import SidebarVue from "./Side-bar.vue";
 export default {
   props: {},
   components: { SidebarVue },
   data() {
-    return { meals: mealsData, search: "" };
+    return { meals: mealsData, search: "",orders:ordersData };
   },
   setup() {
     return { collapsed, toggleSidebar, sidebarWidth };
@@ -15,7 +16,6 @@ export default {
     filteredList() {
       if (this.search != "") {
         return this.meals.filter((meal) => {
-          console.log(meal);
           return meal.name.toLowerCase().includes(this.search.toLowerCase());
         });
       }
@@ -27,7 +27,7 @@ export default {
 
 <template>
   <nav>
-    <div class="logo">order</div>
+    <div class="logo"> <router-link to="/" > order </router-link> </div>
     <div class="search-container">
       <div class="search">
         <input type="search" v-model="search" placeholder="search" class="search" />
@@ -35,7 +35,7 @@ export default {
       </div>
       <ul class="result">
         <li v-for="res in filteredList" :key="res.id">
-          <a href="#">{{ res.name }}</a>
+          <router-link :to="'/meal/'+res.id"> {{ res.name }} </router-link>
         </li>
       </ul>
     </div>
@@ -49,6 +49,7 @@ export default {
       </div>
       <div class="basket" @click="toggleSidebar">
         <i class="fas fa-box-open"></i>
+        <span class="notification"> {{ orders.length }} </span>
       </div>
       <div class="avatar"><i class="fas fa-user-astronaut"></i></div>
       <div class="name">sarah james</div>
@@ -67,6 +68,9 @@ nav {
   .logo {
     font-size: 35px;
     color: $color_font_1;
+    &.router-link-exact-active{
+      color: $color_font_1;
+    }
   }
   .search-container {
     position: relative;
